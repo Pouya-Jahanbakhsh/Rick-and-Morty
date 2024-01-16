@@ -1,11 +1,19 @@
-import { useState } from 'react'
-import './App.css'
+import React from 'react';
+import Navbar from './components/Navbar';
+import CharacterList from './components/CharacterList';
+import CharacterDetail from './components/CharacterDetail';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <h2>hello</h2>
+    <div className="app">
+      <Navbar />
+      <div className="main">
+      <CharacterList />
+      <CharacterDetail/>
+      </div>
+    </div>
   )
 }
 
