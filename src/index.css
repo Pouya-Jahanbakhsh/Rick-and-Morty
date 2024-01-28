@@ -72,17 +72,6 @@
   .badge--secondary {
     background-color: var(--slate-600);
   }
-  .badge {
-    white-space: nowrap;
-    padding: 0.3rem 1rem;
-    border-radius: 1rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-  }
-  
-  .badge--secondary {
-    background-color: var(--slate-600);
-  }
   
   .modal {
     width: 98%;

@@ -16,7 +16,7 @@ function Character({ item }) {
     <div className="list__item">
       <img src={item.image} alt={item.title} />
       <h3 className='name'>
-        {item.gender === "Male" ? <span>&#9794;</span> : <span>&#9792;</span>}
+        {item.gender === "Male" ? <span style={{fontWeight:400}}>&#9794;</span> : <span>&#9792;</span>}
         <span> {item.name}</span>
       </h3>
       <div className="list-item__info info">
