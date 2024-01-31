@@ -49,7 +49,7 @@
 
 .main {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   width: 100%;
   gap: 2rem;
 }
@@ -142,7 +142,6 @@
   height: auto;
   max-height: 15rem;
   object-fit: cover;
-  object-position: center;
 }
 
 .character-detail__info {
@@ -195,9 +194,12 @@
 
 .character-episodes .title .icon {
   height: 25px;
-  transform: rotate(540deg);
+
   transition: all 0.35s;
   color: var(--slate-300);
+}
+.character-episodes .title .icon:hover{
+  transform: rotate(540deg);
 }
 
 .character-episodes h2 {

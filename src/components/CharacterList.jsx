@@ -1,10 +1,9 @@
 import React from 'react';
-import { allCharacters } from '../data';
 
-function CharacterList() {
+function CharacterList({characters}) {
   return (
-    <div className="character-list">
-      {allCharacters.map(item => <Character key={item.id} item={item} />)}
+    <div className="characters-list">
+      {characters.map(item => <Character key={item.id} item={item} />)}
     </div>
   )
 }
