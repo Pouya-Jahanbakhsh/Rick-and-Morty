@@ -12,7 +12,7 @@ function App() {
   const [characters, setCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [querry, setQuerry] = useState([]);
+  const [querry, setQuerry] = useState("");
 
   // useEffect(() => {
   //   async function fetchData() {
@@ -27,18 +27,22 @@ function App() {
     async function fetchData() {
       try {
         setIsLoading((loading)=>!loading);
-        const { data } = await axios.get("https://rickandmortyapi.com/api/characters");
+        const { data } = await axios.get(`https://rickandmortyapi.com/api/character?name=${querry}`);
         //it return a json and i destructure data from it :)
 
         setCharacters(data.results.slice(1, 8));
       } catch (err) {
+        setCharacters([]);
+         // in invalid serachs it return a empty array
         toast.error(err.response.data.error);
+         // this (response.data.error) may different in other api's 
+         
       }finally{
         setIsLoading((loading)=>!loading);
       }
     }
     fetchData();
-  }, [])
+  }, [querry])
   return (
     <div className="app">
       <Toaster />
