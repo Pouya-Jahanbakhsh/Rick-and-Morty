@@ -1,30 +1,62 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from './components/Navbar';
+import Navbar, { Search, SearchResults } from './components/Navbar';
 import CharacterList from './components/CharacterList';
 import CharacterDetail from './components/CharacterDetail';
 import './App.css';
-import { allCharacters } from './data';
+import Loader from './components/Loader';
+import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
+// import { allCharacters } from './data';
 
 function App() {
-  const [characters, setCharacters] = useState(allCharacters);
+  const [characters, setCharacters] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [querry, setQuerry] = useState([]);
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const res = await fetch("https://rickandmortyapi.com/api/character");
+  //     const data = await res.json();
+  //     setCharacters(data.results.slice(1, 8));
+  //   }
+  //   fetchData();
+  // }, []);
+
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch("https://rickandmortyapi.com/api/character");
-      const data = await res.json();
-      setCharacters(data.results);
+      try {
+        setIsLoading((loading)=>!loading);
+        const { data } = await axios.get("https://rickandmortyapi.com/api/characters");
+        //it return a json and i destructure data from it :)
+
+        setCharacters(data.results.slice(1, 8));
+      } catch (err) {
+        toast.error(err.response.data.error);
+      }finally{
+        setIsLoading((loading)=>!loading);
+      }
     }
     fetchData();
-  }, []);
-
+  }, [])
   return (
     <div className="app">
-      <Navbar searchResults={characters.length} />
-      <div className="main">
-        <CharacterList characters={characters} />
+      <Toaster />
+      <Navbar >
+        <Search querry={querry} setQuerry={setQuerry} />
+        <SearchResults searchResults={characters.length} />
+      </Navbar>
+      <Main>
+        {isLoading ? <Loader /> : <CharacterList characters={characters} />}
         <CharacterDetail />
-      </div>
+      </Main>
+
     </div>
   )
 }
 
-export default App
+export default App;
+
+function Main({ children }) {
+  return <div className="main">{children}</div>
+}

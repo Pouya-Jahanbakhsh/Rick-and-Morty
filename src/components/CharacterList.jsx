@@ -1,7 +1,10 @@
 import React from 'react';
 
 function CharacterList({characters}) {
-  return (
+  // if (!characters) return <h2>You have not added any notes yet!</h2>;
+  if(characters.length == 0)return<h2 className="empty">No Characters found!!</h2>;
+  
+  return(
     <div className="characters-list">
       {characters.map(item => <Character key={item.id} item={item} />)}
     </div>

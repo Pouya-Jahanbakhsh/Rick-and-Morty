@@ -56,6 +56,16 @@
 
 .characters-list {
   width: 40%;
+  max-height: 432px;
+  padding: 0 5px;
+  overflow-y: scroll;
+}
+.loader , .empty {
+  width: 40%;
+  max-height: 432px;
+  text-align: center;
+  padding-top: 4rem ;
+  color: var(--slate-300);
 }
 
 .box h2 {
