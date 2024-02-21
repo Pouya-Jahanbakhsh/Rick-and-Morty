@@ -13,19 +13,19 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [query, setQuery] = useState("rick"); // for search 
-  const [selectedId , setSelectedId] = useState(null); // for selecting character
+  const [selectedId, setSelectedId] = useState(null); // for selecting character
   const [favourites, setFavourites] = useState([]);
-  
 
-  function handleSelectCharacter(id){
-    setSelectedId((prevId)=>prevId == id ? null : id);
+
+  function handleSelectCharacter(id) {
+    setSelectedId((prevId) => prevId == id ? null : id);
   }
-  const handleAddFavourite = (char) =>{
-    setFavourites((preFav) => [...preFav , char]);
+  const handleAddFavourite = (char) => {
+    setFavourites((preFav) => [...preFav, char]);
   }
   const handleRemoveFavourite = (char) => {
     // const newFavourites = favourites.filter(item => item !== char);
-    
+
     // setFavourites((favourites) => favourites.filter(item => item !== char)); it has a bug!!!
     setFavourites((favourites) => favourites.filter(item => item.id !== char.id));
   }
@@ -42,24 +42,32 @@ function App() {
   // }, []);
 
   useEffect(() => {
+    const controller = new AbortController(); // for Cleanup Function
+    const signal = controller.signal; // for Cleanup Function
     async function fetchData() {
       try {
         setIsLoading((loading) => !loading);
-        const { data } = await axios.get(`https://rickandmortyapi.com/api/character?name=${query}`);
+        const { data } = await axios.get(`https://rickandmortyapi.com/api/character?name=${query}`, { signal: signal });
         //it return a json and i destructure data from it :)
 
         setCharacters(data.results);
       } catch (err) {
-        setCharacters([]);
-        // in invalid serachs it return a empty array
-        toast.error(err.response.data.error);
-        // this (response.data.error) may different in other api's 
+        if (!axios.isCancel()) { // for Cleanup Function
+          setCharacters([]);
+          // in invalid serachs it return a empty array
+          toast.error(err.response.data.error);
+          // this (response.data.error) may different in other api's 
+        };
+
 
       } finally {
         setIsLoading((loading) => !loading);
       }
     }
     fetchData();
+    return () => {
+      controller.abort(); // Cleanup Function
+    }
   }, [query])
 
   return (
@@ -72,9 +80,9 @@ function App() {
       </Navbar>
       <Main>
         {isLoading ?
-          <div style={{width:"40%"}} ><Loader /></div>
+          <div style={{ width: "40%" }} ><Loader /></div>
           :
-          <CharacterList characters={characters}  onSelectCharacter={handleSelectCharacter} selectedId={selectedId} />}
+          <CharacterList characters={characters} onSelectCharacter={handleSelectCharacter} selectedId={selectedId} />}
         <CharacterDetail selectedId={selectedId} onAddFavourite={handleAddFavourite} onRemoveFavourite={handleRemoveFavourite} isAddToFavourite={isAddToFavourite} />
       </Main>
 
