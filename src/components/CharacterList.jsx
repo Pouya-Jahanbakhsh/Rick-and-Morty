@@ -1,21 +1,21 @@
 import React from 'react';
 
-function CharacterList({characters}) {
+function CharacterList({characters , onSelectCharacter , selectedId}) {
   // if (!characters) return <h2>You have not added any notes yet!</h2>;
-  if(characters.length == 0)return<h2 className="empty">No Characters found!!</h2>;
-  
+  if(characters.length == 0)return<h2 className="empty-character-list">No Characters found!!</h2>;
+
   return(
     <div className="characters-list">
-      {characters.map(item => <Character key={item.id} item={item} />)}
+      {characters.map(item => <Character key={item.id} item={item} onSelectCharacter={onSelectCharacter} selectedId={selectedId} />)}
     </div>
   )
 }
 
 export default CharacterList;
 
-function Character({ item }) {
+function Character({ item , onSelectCharacter , selectedId }) {
   return (
-    <div className="list__item">
+    <div className="list__item" onClick={()=>onSelectCharacter(item.id)} >
       <img src={item.image} alt={item.title} />
       <h3 className='name'>
         {item.gender === "Male" ? <span style={{fontWeight:400}}>&#9794;</span> : <span>&#9792;</span>}
@@ -26,7 +26,7 @@ function Character({ item }) {
         <span> {item.status}</span>
         <span> - {item.species}</span>
       </div>
-      <button title='See' className="icon red">&#128065;</button>
+      <button title='See' className={`icon ${item.id === selectedId ? "red" : ""}`}>&#128065;</button>
     </div>
   )
 }
